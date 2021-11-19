@@ -1,4 +1,4 @@
-function ScoreTable() {
+function ScoreTable({ scores }) {
   return (
     <>
       <h2>ScoreTable</h2>
@@ -12,9 +12,13 @@ function ScoreTable() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-          </tr>
+          {scores.map((score) => (
+            <tr>
+              <td>{score.one}</td>
+              <td>{score.two}</td>
+              <td>{score.one + score.two}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </>

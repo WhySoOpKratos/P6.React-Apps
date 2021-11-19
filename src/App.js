@@ -1,5 +1,5 @@
 // import { useState } from 'react';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import rollDice from "./libs/roll-dice";
 import TitleComponent from "./components/title/title.component";
 import { Dice as DiceComponent } from "./components/dice/dice.component";
@@ -7,25 +7,45 @@ import ScoreTable from "./components/score-table/score-table.component";
 
 function App() {
   const _handleRollBoth = () => {
-    setImgSrc1(rollDice());
-    setImgSrc2(rollDice());
+    setcScore({
+      one: rollDice(),
+      two: rollDice(),
+    });
   };
+
   const _handleDiceClick = (id) => {
-    console.log(id);
+    // console.log(id);
     switch (id) {
       case "dice01":
-        setImgSrc1(rollDice());
+        setcScore({
+          one: rollDice(),
+          two: cScore.two,
+        });
         break;
       case "dice02":
-        setImgSrc2(rollDice());
+        setcScore({
+          two: rollDice(),
+          one: cScore.one,
+        });
         break;
       default:
         break;
     }
   };
 
-  const [imgSrc1, setImgSrc1] = useState(rollDice());
-  const [imgSrc2, setImgSrc2] = useState(rollDice());
+  const [cScore, setcScore] = useState({
+    one: rollDice(),
+    two: rollDice(),
+  });
+
+  const [scores, setScores] = useState([]);
+
+  useEffect(() => {
+    console.log(cScore);
+    let newScores = [...scores];
+    newScores.push(cScore);
+    setScores(newScores);
+  }, [cScore]);
 
   return (
     <div className="container">
@@ -33,13 +53,13 @@ function App() {
       <div className="row">
         <DiceComponent
           id="dice01"
-          imgSrc={imgSrc1}
-          onClick={_handleDiceClick}
+          imgSrc={`images/dice${cScore.one}.png`}
+          onRoll={_handleDiceClick}
         />
         <DiceComponent
           id="dice02"
-          imgSrc={imgSrc2}
-          onClick={_handleDiceClick}
+          imgSrc={`images/dice${cScore.two}.png`}
+          onRoll={_handleDiceClick}
         />
       </div>
 
@@ -48,7 +68,7 @@ function App() {
         Roll the Dice{" "}
       </button>
       <div className="row">
-        <ScoreTable />
+        <ScoreTable scores={scores} />
       </div>
     </div>
   );
