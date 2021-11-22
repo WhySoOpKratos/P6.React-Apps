@@ -41,7 +41,7 @@ function App() {
   const [scores, setScores] = useState([]);
 
   useEffect(() => {
-    console.log(cScore);
+    // console.log(cScore);
     let newScores = [...scores];
     newScores.push(cScore);
     setScores(newScores);
